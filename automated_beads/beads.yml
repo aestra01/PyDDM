@@ -1,0 +1,28 @@
+DataDirectory: 'NEWDIR'
+FileName: 'NEWFILE'
+Metadata:
+  pixel_size: 0.07 # size of pixel in um         
+  frame_rate: FRAMEPS #frames per second
+Analysis_parameters:
+  starting_frame_number: 0
+  ending_frame_number: ENDFRAME #Total number of frames 
+  number_lagtimes: LAGTIME # 3% of ending_frame_number
+  first_lag_time: 1
+  last_lag_time: LASTTIME # 2/3 of eding_frame_number
+  crop_to_roi: CROP  # set to 'null' (no quotes) for no cropping [topleft,bottomleft,topright,bottomright] 
+  # TopLeft[0,512,0,512]   TopRight[0,512,512,1024]   BottomLeft[512,1024,0,512]   BottomRight[512,1024,512,1024]
+  split_into_4_rois: no
+  use_windowing_function: no #Use Blackmann-Harris windowing or not?
+  binning: yes
+  bin_size: 2
+  central_angle: null
+  angle_range: null
+Fitting_parameters:
+  model: 'DDM Matrix - Single Exponential' #Options are 'ISF - Single Exponential' and ...
+  Tau: [1.0, 0.0001, 60]
+  StretchingExp: [1.0, 0.5, 1.1]
+  Amplitude: [1e2, 1, 1e10]
+  Background: [10, 0, 1e7]
+  Good_q_range: [5, 20]
+  Auto_update_good_q_range: True
+  
