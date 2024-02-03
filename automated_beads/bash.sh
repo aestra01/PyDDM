@@ -6,7 +6,7 @@
 i=1
 
 # CHANGE THESE WITH NEW EXPERIMENTS 
-export CURRENT_DIRECTORY='/Users/rosslabbie/Desktop/Post_PyDDM_Data/1024_5Vids/20240128_100nmBeads_ProgressiveLog/'
+export CURRENT_DIRECTORY='/Users/rosslabbie/Desktop/Post_PyDDM_Data/1024_5Vids/20240128_100nmBeads_ProgressiveLog/1st_0MUrea/0MUrea_100nmBeads_10msExp_1024.1024_100Urease001/'
 export CURRENT_CSV=100nmBeads-Table.csv
 export CURRENT_FILENAME_MIDDLE=_100nmBeads_10msExp_MiddleLane_100urease_1024_
 
@@ -46,8 +46,34 @@ do
     sed -i -e "s/LASTTIME/${linearr[5]}/g" results/$i/beads.yml
     
     # column b, line 12
+    #export CROP_CHOICE=${linearr[1]}
+    #echo ${crops['TopLeft']}
+    if [ "${linearr[1]}" == "TopLeft" ];
+    then
+	sed -i -e "s/CROP/[0,512,0,512]/g" results/$i/beads.yml
+    fi
 
-    sed -i -e "s/CROP/${linearr[1]}/g" results/$i/beads.yml
+    if [ "${linearr[1]}" == "TopRight" ];
+    then
+        sed -i -e "s/CROP/[0,512,512,1024]/g" results/$i/beads.yml
+    fi
+
+    if [ "${linearr[1]}" == "BottomLeft" ];
+    then
+        sed -i -e "s/CROP/[512,1024,0,512]/g" results/$i/beads.yml
+    fi
+
+    if [ "${linearr[1]}" == "BottomRight" ];
+    then
+        sed -i -e "s/CROP/[512,1024,512,1024]/g" results/$i/beads.yml
+    fi
+    
+#    ['TopLeft']=[0,512,0,512]
+#    ['TopRight']=[0,512,512,1024]
+#    ['BottomLeft']=[512,1024,0,512]
+#    ['BottomRight']=[512,1024,512,1024]
+
+    #    sed -i -e "s/CROP/${crops[${linearr[1]}]}/g" results/$i/beads.yml
     
     # run the script using the arguments in the line and print (>) the results into a test file
     # move into that directory and do the script before leaving
