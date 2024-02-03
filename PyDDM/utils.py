@@ -169,7 +169,9 @@ def plot_one_tau_vs_q(fit, plot_color,
             tau = newt(tau, stretch_exp)
     
     ax.loglog(q[1:], tau[1:], 'o', color=plot_color)
-    
+    np.savetxt("q.txt", np.array(q[1:]))
+    np.savetxt("tau.txt", np.array(tau[1:]))    
+
     if low_good_q is None:
         lower_index_for_good_q = fit.good_q_range[0]
         if use_tau2:
@@ -208,6 +210,8 @@ def plot_one_tau_vs_q(fit, plot_color,
     else:
         tau_fit = (1./fit.effective_diffusion_coeff) * (q**fit.tau_vs_q_slope)
     ax.plot(q, tau_fit, '-k', lw=3, alpha=0.8)
+    np.savetxt("q_fit.txt", np.array(q))
+    #np.savetxt("tau_fit.txt", np.array(tau_fit))
     
     if use_tau2:
         ax.plot(q, (1./fit.tau2_velocity)*(q**-1), linestyle='dashdot')
@@ -215,7 +219,8 @@ def plot_one_tau_vs_q(fit, plot_color,
     else:
         ax.plot(q, (1./fit.velocity)*(q**-1), linestyle='dashdot')
         ax.plot(q, (1./fit.diffusion_coeff)*(q**-2), linestyle='dashed')
-    
+        np.savetxt("tau_fit.txt", np.array((1./fit.diffusion_coeff)*(q**-2)))
+        
     ax.set_xlabel("q (μm$^{-1}$)", fontdict=font_plt_ax)
     ax.set_ylabel(ylabel_str, fontdict=font_plt_ax)
     ax.xaxis.set_major_formatter(plt.FuncFormatter('{:.3f}'.format))
@@ -244,6 +249,7 @@ def plot_one_tau_vs_q(fit, plot_color,
             cols = ['Tau vs q slope', 'Effective diff coeff', 'MSD alpha', 'diffusion coeff', 'velocity']
         tables = ax.table(cellText=[cellText], colLabels=cols, bbox=[0, -0.18, 1, 0.1])
     
+    plt.savefig("q_vs_tau")
     return fig
 
     
