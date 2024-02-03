@@ -18,27 +18,25 @@ exp_y = -2 * x - 1
 
 def slope(x, y_int=-1, slope = -2):
     return slope * x + y_int
-q = np.genfromtxt("../Examples/q.txt")
-#print(q)
-tau = np.genfromtxt("../Examples/tau.txt")
-plt.scatter(np.log(q), np.log(tau))
-#plt.xscale("log")
-#plt.yscale("log")
 
+## add to pyddm_script
+q = np.genfromtxt("../Examples/q.txt")
+tau = np.genfromtxt("../Examples/tau.txt")
+##
+
+plt.scatter(np.log(q), np.log(tau))
+
+## add to pyddm_script
 q_fit = np.genfromtxt("../Examples/q_fit.txt")
 tau_fit = np.genfromtxt("../Examples/tau_fit.txt")
-
-#plt.plot(x, slope(x), color = "g")
+##
 
 plt.plot(np.log(q_fit), np.log(tau_fit))
-#plt.fill_between(x, exp_y, exp_y + .5, alpha = 0.2)
-#plt.fill_between(x, exp_y, exp_y - .5, alpha = 0.2)
-#plt.xlim(-2,2)
-#plt.ylim(-5,3)
-#plt.xscale("log")
-#plt.yscale("log")
 plt.show()
 
+
+
+## probably copy this over to the pyddm file 
 def find_closest_points(my_pt_x, my_pt_y, code_x, code_y, expected_slope=-2.0, tolerance = 5.0, y_int=-1):
 
     closest_points = []
@@ -50,16 +48,14 @@ def find_closest_points(my_pt_x, my_pt_y, code_x, code_y, expected_slope=-2.0, t
         distance = np.abs(my_pt_y[i] - code_y[i+ 1]) #(my_pt_x[i] * (expected_slope)))
         distance_store.append([distance, my_pt_x[i], my_pt_y[i]])
         print("distance is", distance)
-    #print(distance_store)
     distance_store = np.array(distance_store).T
     distance_store[0] = distance_store[0]/max(distance_store[0])
-
-
-
     smallest_val = np.argmin(distance_store)
 
     return distance_store
 
+
+## probably copy this guy too 
 def find_nearby_avg(dist_x_y):
 
     lowest_point = np.argmin(dist_x_y[0])
@@ -77,19 +73,16 @@ def find_nearby_avg(dist_x_y):
 
     return thisdict[best_option]
 
-
-
-
-#expected_slope = 2.1  # Replace with your expected slope
+## this will be how you actually get the ideal points
 result = find_closest_points(q, tau, q_fit, tau_fit)
-
 print(result[0])
+## go ahead and insert this into the desired points from your code - line 27 in pyddm_script.py
+## use bestavg instead of forced qs
+bestavg = find_nearby_avg(result)
 
 
-
+## this stuff is probably unnecessary 
 plt.scatter(np.log(result[1]), np.log(result[2]))
-#plt.xscale("log")
-#plt.yscale("log")
 plt.plot(np.log(q_fit), np.log(tau_fit), color = "g")
 plt.fill_between(np.log(q_fit), np.log(tau_fit), np.log(tau_fit) + 0.3, alpha = 0.2)
 plt.fill_between(np.log(q_fit), np.log(tau_fit), np.log(tau_fit) - 0.3, alpha = 0.2)
